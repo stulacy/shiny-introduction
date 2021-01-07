@@ -17,7 +17,12 @@
 # Output files from R CMD check
 /*.Rcheck/
 
+# Output files from compiling latex
+*.log
+*.aux
+
 # RStudio files
+*.Rproj
 .Rproj.user/
 
 # produced vignettes
