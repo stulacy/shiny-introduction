@@ -102,7 +102,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
   - You can create your own \alert{reactive elements}, rather than just using `input`. See the [Shiny documentation](https://shiny.rstudio.com/articles/reactivity-overview.html)
   - You can \alert{dynamically create UI elements} using `renderUI` and `uiOutput`
-  - Code can start to get messy with larger multi-page apps - recommend putting each page into its own files and using `source` to load them in ([example here](https://github.com/stulacy/RDES-Shiny/blob/master/app.R))
+  - Code can start to get messy with larger multi-page apps - recommend putting each page into its own files and using `source` to load them in ([example here](https://github.com/stulacy/RDES-Shiny/blob/master/app.R)) or using [modules](https://shiny.rstudio.com/articles/modules.html)
+  
+# Example: 7_reactive_part2
   
 ## Hosting: 
 
@@ -115,6 +117,6 @@ knitr::opts_chunk$set(echo = FALSE)
   
 ## Conclusions
 
-  - Biggest \alert{strength}: Shiny is easy to get apps up and running with a wide range of features to cover most use cases
+  - Biggest \alert{strength}: Shiny makes it easy to get apps up and running with a wide range of features to cover most use cases
   - Biggest \alert{weakness}: For larger apps, the code can become hard to navigate, particularly if you start adding in custom JS
   
