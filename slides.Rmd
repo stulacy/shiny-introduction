@@ -1,8 +1,10 @@
 ---
-title: "Making interactive webapps in R using Shiny"
+title: "Making interactive web-apps in R using Shiny"
 author: "Stuart Lacy"
 date: "17/02/2021"
 output: binb::metropolis
+classoption: "aspectratio=169"
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -11,63 +13,110 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-  - Who is this tutorial aimed at?
-  - What will this tutorial cover?
-  - What is Shiny?
-  - Why use Shiny?
-  - How do we use Shiny (with examples)
+  - \alert{Learning objective}: understand what Shiny is, the potential uses it has for research, and be able to setup a basic app after this talk
+  - Assumes you have some familiarity with R, but no experience with web development is required
+  - Follow along with the examples by cloning this repository:
+  - File -> New Project -> Version Control -> Git -> Repository URL: `https://github.com/stulacy/shiny-introduction.git`
   
-## What is Shiny
+## What is Shiny and why would I want to use it?
 
-  - Webapp framework built in R
-  - Show examples of websites:
-    - COZI
-    - Genetic subtype predictor
-    - Multi-state model
-    - A more professional option!
+  - \alert{Web-app framework} using R
+  - Don't need to know any Javascript/CSS/web hosting
+  - Developed by the RStudio/tidyverse team
+  - Use cases:
+    - Exploring large datasets
+    - Visualise \alert{live data}
+    - Provide \alert{tools} to accompany published research
+    - Establish an online presence
     
-## Why use Shiny?
-
-  - Want a website and already comfortable with R!
-  - Don't have to use \alert{any} Javascript, HTML, CSS, or consider web hosting 
-  - Very easy to get website up and running quickly with minimal boilerplate
-  - Can host on University infrastructure `shiny.york.ac.uk`
-  - However, if want to design a more professional looking website will need to use Javascript & CSS, at which point Shiny doesn't shine...
- 
-## What sorts of websites can I create with it?
-
-  - Text, plots and tables using the exact same syntax
-  - \alert{Interactive widgets}:
-    - Plots with controls
-    - User input: sliders, buttons, checkboxs
-    - Maps
-    - Animations
-    - Upload files
-  - All of this just with using R only, with Javascript can do a lot more
+# Example Shiny apps
   
-## Uses
+## What does Shiny code look like?
 
-  - Have a place to visualise live data online
-  - Provide tools to accompany published models, i.e. showing how model works and allow users to run their own data through it
-  - Exploring large datasets interactively
-  - Sharing work with project collaborators to save them asking lots of questions
-  - If need some widgets, like Maps
+  - Code is organised into \alert{2 files}: 
+  - \alert{`ui.R`}
+    - Defines the \alert{widgets} and their layout on the page
+    - Widgets can be \alert{outputs} such as plots, tables, text
+    - And \alert{inputs}, such as buttons, sliders, text fields etc...
+  - \alert{`server.R`}
+    - Defines all \alert{back end logic} needed to process incoming inputs and generate the required outputs
+  - For every widget there is a corresponding function call in the UI (`renderX`) and in the server (`xOutput`)
   
-## What does code look like?
+# Example: 1_basic
 
-  - Go through examples from:
-    - Static page. Just plot, text, table. Show code layout and how server and UI link together
-    - Interactivity: Use plotly and DT on the same outputs
-    - User controls: Add in slider, text box etc... Discuss reactivity
-    - Dashboard / UI: How to make app look better
-    - Extending with JS/CSS: Worth including or just mention it's possible?
+## Adding interactivity
+
+  - We can take advantage of Javascript to add \alert{interactivity} to output visual elements
+  - There are libraries that provide convenient wrappers for interactive widgets:
+    - `plotly`: general plotting library with controls
+    - `DataTables`: tables
+    - `leaflet`: maps
+    - `networkD3`: network diagrams
+    - `diagrammeR`: graphs and flowcharts
+  
+# Example: 2_interactive
+
+## User inputs
+
+  - We can pass \alert{user inputs} from `ui.R` to `server.R`, process the input accordingly, and return an updated output
+  - In Shiny, this is done with the concept of \alert{reactivity}
+  - UI elements are referenced in `server.R` through the `input` object, i.e. the current value of a dropdown menu
+  - Any output expressions that use an input value are \alert{reactive}, and will re-evaluate when the input value changes 
+  
+# Example: 3_inputs
+
+## Input types
+
+  - Lots of \alert{input types}:
+    - Buttons
+    - Checkboxes
+    - Date selection/range
+    - File upload/download
+    - Text input
+    - Radio buttons
+    - Dropdown menu
+    - Sliders
+
+## Customising your app's appearance
+
+  - By default all Shiny apps are \alert{responsive}, i.e. they adapt their layout to the size of the viewing device
+  - To add more structure to an app, you can use a \alert{`sidebarLayout`} to separate inputs from outputs
+  - You can partition your app further with \alert{tabbed output} using `tablistPanel`
+  - You can create entirely independent \alert{pages} with `navbarPage`
+
+# Example: 4_ui_sidebar
+  
+# Example: 5_ui_tabs
+
+# Example: 6_ui_pages
+
+## Further visual customisation
+
+  - There are lots more ways in which you can tweak the appearance of your app
+  - The \alert{bslib} package provides different themes
+  - \alert{shinydashboard} package provides new UI elements for creating \alert{dashboard} style displays
+  - Can add \alert{CSS} to have fine control over each element's appearance
+  - Add flourishes with \alert{Javascript} (`shinyjs` package provides some useful features such as loading spinners)
     
+## More advanced tips
+
+  - You can create your own reactive elements, rather than just using `input`. See the [Shiny documentation](https://shiny.rstudio.com/articles/reactivity-overview.html)
+  - You can \alert{dynamically create UI elements} using `renderUI` and `uiOutput`
+  - Code can start to get messy with larger multi-page apps - recommend putting each page into its own files and using `source` to load them in ([example here](https://github.com/stulacy/RDES-Shiny/blob/master/app.R))
+  - You can organise elements into rows (`fluidRow`) and columns (`column`) 
+  
 ## Hosting: 
 
-  - Shinyapps.io
-  - shiny.york.ac.uk
-
+  - University provide \alert{free hosting} at shiny.york.ac.uk
+  - 2 methods:
+    - \alert{Managed}: provide them access to a GitHub repo and it will automatically update whenever there is a change to the main branch
+    - \alert{Self-hosted}: You get given access to a folder where you can put your app and any dependencies/data you need
+  - Email `itsupport@york.ac.uk` for access
+  - Shinyapps.io has free hosting provided by RStudio team
+  
 ## Conclusions
 
-  - Shown how easy Shiny is to use
-  - Compare code structure to JS apps showing how can get hard to follow for bigger projects?
+  - Biggest strength: Shiny is easy to get apps up and running with a wide range of features to cover most use cases
+  - Biggest weakness: For larger apps, the code can become hard to navigate
+  - Likewise, if you want to add some polish to get a more professional user experience, you will most likely need to venture into adding your own JS and CSS, which can be a bit unwieldy
+  
