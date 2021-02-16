@@ -92,7 +92,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Further visual customisation
 
-  - There are lots more ways in which you can tweak the appearance of your app
+  - You can organise elements into rows (`fluidRow`) and columns (`column`) 
   - The \alert{bslib} package provides different themes
   - \alert{shinydashboard} package provides new UI elements for creating \alert{dashboard} style displays
   - Can add \alert{CSS} to have fine control over each element's appearance
@@ -100,10 +100,9 @@ knitr::opts_chunk$set(echo = FALSE)
     
 ## More advanced tips
 
-  - You can create your own reactive elements, rather than just using `input`. See the [Shiny documentation](https://shiny.rstudio.com/articles/reactivity-overview.html)
+  - You can create your own \alert{reactive elements}, rather than just using `input`. See the [Shiny documentation](https://shiny.rstudio.com/articles/reactivity-overview.html)
   - You can \alert{dynamically create UI elements} using `renderUI` and `uiOutput`
   - Code can start to get messy with larger multi-page apps - recommend putting each page into its own files and using `source` to load them in ([example here](https://github.com/stulacy/RDES-Shiny/blob/master/app.R))
-  - You can organise elements into rows (`fluidRow`) and columns (`column`) 
   
 ## Hosting: 
 
@@ -116,7 +115,6 @@ knitr::opts_chunk$set(echo = FALSE)
   
 ## Conclusions
 
-  - Biggest strength: Shiny is easy to get apps up and running with a wide range of features to cover most use cases
-  - Biggest weakness: For larger apps, the code can become hard to navigate
-  - Likewise, if you want to add some polish to get a more professional user experience, you will most likely need to venture into adding your own JS and CSS, which can be a bit unwieldy
+  - Biggest \alert{strength}: Shiny is easy to get apps up and running with a wide range of features to cover most use cases
+  - Biggest \alert{weakness}: For larger apps, the code can become hard to navigate, particularly if you start adding in custom JS
   
