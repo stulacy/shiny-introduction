@@ -40,7 +40,7 @@ knitr::opts_chunk$set(echo = FALSE)
     - And \alert{inputs}, such as buttons, sliders, text fields etc...
   - \alert{`server.R`}
     - Defines all \alert{back end logic} needed to process incoming inputs and generate the required outputs
-  - For every widget there is a corresponding function call in the UI (`renderX`) and in the server (`xOutput`)
+  - For every widget there is a corresponding function call in the UI (`xOutput`) and in the server (`renderX``)
   
 # Example: 1_basic
 
