@@ -1,8 +1,10 @@
 ---
 title: "Making interactive web-apps in R using Shiny"
 author: "Stuart Lacy"
-date: "17/02/2021"
-output: binb::metropolis
+date: "02/03/2022"
+output: 
+  binb::metropolis:
+      keep_tex: false
 classoption: "aspectratio=169"
 urlcolor: blue
 ---
@@ -11,112 +13,243 @@ urlcolor: blue
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
 ## Introduction
 
-  - \alert{Learning objective}: understand what Shiny is, the potential uses it has for research, and be able to setup a basic app after this talk
+  - \alert{Allow others to explore the output of your R code through a web browser!}
+  - \alert{Learning objective}: understand what Shiny is, the potential uses it has for research, and be able to create a basic app after this talk
   - Assumes you have some familiarity with R, but no experience with web development is required
-  - Follow along with the examples by cloning this repository:
+  - \alert{Follow along} with the examples by cloning this repository within RStudio:
   - File -> New Project -> Version Control -> Git -> Repository URL: `https://github.com/stulacy/shiny-introduction.git`
   
-## What is Shiny and why would I want to use it?
+## What is Shiny?
 
-  - \alert{Web-app framework} using R
-  - Don't need to know any Javascript/CSS/web hosting
+  - An R package for creating \alert{web-apps}
   - Developed by the RStudio/tidyverse team
-  - Use cases:
-    - Exploring large datasets
-    - Visualise \alert{live data}
-    - Provide \alert{tools} to accompany published research
-    - Establish an online presence
-    
-# Example Shiny apps
+  - Designed with a focus on \alert{data visualisation}
+
+## Why would I want to use it?
+
+  - Very \alert{quick development time} for initial proof of concepts
+  - Provide means for non-R users to access your work
+  - Don't need to know any HTML/CSS/JS, but can use those skills for \alert{customisation}
+  - Clean and modern looking default appearance
+  - Have access to R's extensive libraries
+  - Simple \alert{hosting} options
+  
+## Possible use cases
+
+  - Interactively visualize and \alert{explore} datasets (rather than generating PDFs with hundreds of figures)
+  - \alert{Monitor} live data streams
+  - Provide \alert{tools} to accompany published research (either methods, models, or data)
+  - Establish an online presence
+  - Provide visual interface to R code (i.e. automatic report generation)
+  - Examples:
+    - [COVID-19 dashboard](https://vac-lshtm.shinyapps.io/ncov_tracker/)
+    - [Genome browser](https://gallery.shinyapps.io/genome_browser/)
+    - [MRI Visualization](https://haozhu233.shinyapps.io/shinyMRI-contest/)
+    - [Lego Mosaic Creator](https://rpodcast.shinyapps.io/shinylego/)
+
+# Shiny code layout
   
 ## What does Shiny code look like?
 
-  - Code is organised into \alert{2 files}: 
-  - \alert{`ui.R`}
-    - Defines the \alert{widgets} and their layout on the page
-    - Widgets can be \alert{outputs} such as plots, tables, text
-    - And \alert{inputs}, such as buttons, sliders, text fields etc...
-  - \alert{`server.R`}
-    - Defines all \alert{back end logic} needed to process incoming inputs and generate the required outputs
-  - For every widget there is a corresponding function call in the UI (`xOutput`) and in the server (`renderX``)
+\begin{itemize}
+  \item<1-> Shiny apps are organised into \alert{2 files}:
+  \item<1-> \alert{$ui.R$} (\textbf{U}ser \textbf{I}nterface)
+  \begin{itemize}[<1->]
+    \item Defines the appearance of the app to end users (\alert{frontend})
+    \item Every UI is composed of multiple \alert{``widgets''}
+    \item Widgets can be \alert{outputs} such as plots, tables, text
+    \item And \alert{inputs} such as buttons, sliders, text fields, etc...
+  \end{itemize}
+  \item<2-> \alert{$server.R$}
+  \begin{itemize}[<2->]
+    \item Defines all \alert{backend} logic needed to process incoming inputs and generate the required outputs 
+    \item Majority of your R code lives here
+  \end{itemize}
+  \item<3-> Input widgets are defined by \texttt{xInput} function calls in the UI
+  \item<3-> Output widgets are referenced in both the UI (\texttt{xOutput} functions) and in the server (\texttt{renderX})
+\end{itemize}
   
-# Example: 1_basic
+## Example 1: Basic working example
 
-## Adding interactivity
+  - `examples/1_basic/`
+  - Example application with a single plot and table
+  - No interactivity at all
+  - Can look at the code either on GitHub or can clone it to your PC [https://github.com/stulacy/shiny-introduction](https://github.com/stulacy/shiny-introduction)
+  - Can run the app locally either by opening the project in RStudio, or can simply run `shiny::runGitHub(repo="shiny-introduction", username="stulacy", subdir="examples/1_basic")`
 
-  - We can take advantage of Javascript to add \alert{interactivity} to output visual elements
-  - There are libraries that provide convenient wrappers for interactive widgets:
+## Example 2: Interactive output elements
+ 
+  - There are many options for \alert{interactive} output widgets:
     - `plotly`: general plotting library with controls
-    - `DataTables`: tables
+    - `DataTables`: interactive tables
     - `leaflet`: maps
     - `networkD3`: network diagrams
     - `diagrammeR`: graphs and flowcharts
+    - `r2d3`: Interface to D3 Javascript plotting library
+  - `examples/2_interactive_widgets`
+  - The same layout as example 1, but with an interactive plot and table
   
-# Example: 2_interactive
+# Reactivity
 
-## User inputs
+## Example 3: Reactive user inputs
 
-  - We can pass \alert{user inputs} from `ui.R` to `server.R`, process the input accordingly, and return an updated output
-  - In Shiny, this is done with the concept of \alert{reactivity}
-  - UI elements are referenced in `server.R` through the `input` object, i.e. the current value of a dropdown menu
-  - Any output expressions that use an input value are \alert{reactive}, and will re-evaluate when the input value changes 
-  
-# Example: 3_inputs
+  - The main form of adding interactivity in Shiny apps is through \alert{reactive} connections between the UI and Server
+  - Input UI elements are referenced in `server.R` through the `input` object, e.g. the current value of a dropdown menu
+  - Whenever this value changes due to user input, any output widgets that reference it will \alert{re-evaluate} and pass their new output (plot, table etc...) back to the UI
+  - `examples/3_reactivity`
 
-## Input types
+## Example 4: Multiple reactive dependencies
 
-  - Lots of \alert{input types}:
+  - There is a \alert{many:many} relationship between input and outputs. Each `input` can be used in multiple outputs (as seen in previous example), and likewise each `output` can reference multiple `inputs`
+  - There are lots of possible \alert{input widgets}:
     - Buttons
     - Checkboxes
     - Date selection/range
-    - File upload/download
+    - File upload
+    - File download
     - Text input
     - Radio buttons
     - Dropdown menu
     - Sliders
+  - `examples/4_multiple_reactives`
+    
+## Example 5: Custom reactive objects
 
-## Customising your app's appearance
+  - So far we've seen that `input` objects are reactive and will \alert{trigger a change} in any downstream output that uses them
+  - You can also \alert{create your own} reactive elements from several possible data types
+  - \alert{Be careful} when chaining lots of reactive elements, it can make your code hard to follow and your app possibly slow!
+  - `examples/5_custom_reactivity`
+  
+## Reactivity chains
+
+\begin{columns}[T,onlytextwidth]
+    \column{0.5\textwidth}
+      Example 4
+      \begin{itemize}
+        \item User selects transform or variable 
+        \item Simultaneously:
+        \begin{itemize}
+          \item Scatter plot transforms selected variable and is redrawn
+          \item Density plot transforms selected variable and is redrawn
+        \end{itemize}
+      \end{itemize}
+    \column{0.5\textwidth}
+      Example 5
+        \begin{itemize}
+            \item User selects transform or variable 
+            \item $transformed\_df$ transforms selected variable
+            \item Simultaneously:
+            \begin{itemize}
+              \item Scatter plot is redrawn
+              \item Density plot is redrawn
+            \end{itemize}
+        \end{itemize}
+\end{columns}
+
+## More reactive objects
+
+  - Alternatively can use the `observe` and `reactiveValues` paradigm, useful when have multiple reactive items or when the reactive object has stateful characteristics
+  - This can be a complex topic, so refer to the [Shiny documentation](https://shiny.rstudio.com/articles/reactivity-overview.html) for more details
+
+\footnotesize 
+
+```{r eval=F, echo=T}
+updated_vals <- reactiveValues()
+observe({
+  # Observe is triggered when any reactive expression contained within triggers
+  # Unlike reactive, it doesn't return anything
+  raw_val <- iris[[input$xvar]]
+  funcs <- list("None"=identity, "Squared"=function(x) x**2, "Log"=log)
+  
+  transformed <- funcs[[input$transform]](raw_val)
+  label <- sprintf("Displaying variable %s with transform %s", input$xvar, input$transform)
+  updated_vals$data <- transformed
+  updated_vals$label <- label
+})
+```
+  
+
+  
+# Customising your app's appearance
+
+## Structuring UI
 
   - By default all Shiny apps are \alert{responsive}, i.e. they adapt their layout to the size of the viewing device
-  - To add more structure to an app, you can use a \alert{`sidebarLayout`} to separate inputs from outputs
+  - To add more structure to an app, you can use a `sidebarLayout` to \alert{separate} inputs from outputs
   - You can partition your app further with \alert{tabbed output} using `tablistPanel`
   - You can create entirely independent \alert{pages} with `navbarPage`
 
-# Example: 4_ui_sidebar
-  
-# Example: 5_ui_tabs
+## Example 6: UI Sidebar
 
-# Example: 6_ui_pages
+  - `examples/6_ui_sidebar`
+  - Shows an example of adding a \alert{sidebar} to an app
+  - Useful for separating user controls from the resultant outputs
+  
+## Example 7: UI Tabs
+
+  - `examples/7_ui_tabs`
+  - Shows how separate UIs can be accessed through \alert{tabs}
+
+## Example 8: UI Pages
+
+  - `examples/8_ui_pages`
+  - When a stronger distinction between different UIs is required, \alert{pages} can be used instead of tabs
 
 ## Further visual customisation
 
   - You can organise elements into rows (`fluidRow`) and columns (`column`) 
-  - The \alert{bslib} package provides different themes
+  - The \alert{bslib} package provides different themes if you get bored of the default
   - \alert{shinydashboard} package provides new UI elements for creating \alert{dashboard} style displays
   - Can add \alert{CSS} to have fine control over each element's appearance
   - Add flourishes with \alert{Javascript} (`shinyjs` package provides some useful features such as loading spinners)
-    
-## More advanced tips
+  
+## Example 9: Shinydashboard
 
-  - You can create your own \alert{reactive elements}, rather than just using `input`. See the [Shiny documentation](https://shiny.rstudio.com/articles/reactivity-overview.html)
-  - You can \alert{dynamically create UI elements} using `renderUI` and `uiOutput`
-  - Code can start to get messy with larger multi-page apps - recommend putting each page into its own files and using `source` to load them in ([example here](https://github.com/stulacy/RDES-Shiny/blob/master/app.R)) or using [modules](https://shiny.rstudio.com/articles/modules.html)
-  
-# Example: 7_reactive_part2
-  
+  - `examples/9_shinydashboard`
+  - Shows how the example 8 app looks under the `shinydashboard` package
+  - The UI elements provided by `shinydashboard` are designed to get a quick dashboard up and running in a more structured manner than using the default UI
+
+# Other considerations
+
+## Organising larger apps
+
+  - You can \alert{dynamically create UI elements} in the server end using `renderUI` and `uiOutput`
+  - Code can start to get disorganised with larger multi-page apps - recommend putting each page into its own files and using `source` to load them in ([example here](https://github.com/stulacy/RDES-Shiny/blob/master/app.R)) or using [modules](https://shiny.rstudio.com/articles/modules.html)
+  - If your program is running slower than expected, have a look at the \alert{reactive dependencies} and see if there is any redundancy
+  - Bear in mind that each time a plot is updated through user interaction, a new plot needs to be generated and downloaded from the server - can be CPU intensive if done very frequently or a big dataset!
+
 ## Hosting: 
 
   - University provide \alert{free hosting} at shiny.york.ac.uk
   - 2 methods:
-    - \alert{Managed}: provide them access to a GitHub repo and it will automatically update whenever there is a change to the main branch
-    - \alert{Self-hosted}: You get given access to a folder where you can put your app and any dependencies/data you need
+    - \alert{Managed}: provide access to a GitHub repo and it will automatically update whenever there is a change to the main branch
+    - \alert{Self-hosted}: you are given access to a folder where you can put your app and any dependencies/data you need
   - Email `itsupport@york.ac.uk` for access
-  - Shinyapps.io has free hosting provided by RStudio team
+  - NB: not designed for a large number of concurrent users
+  - Shinyapps.io has free hosting for up to 5 apps provided by RStudio team
+  
+## Data storage:
+
+  - Several options for storing data
+  - \alert{CSV} 
+    - On same machine
+    - Or remote (through AWS, Google Drive, or even Google Sheets)
+  - \alert{Database} on same machine (SQLite) or remote (Postgres/MySQL/SQLServer etc...)
+  - Databases are useful for big datasets as they only load the requested subsets into memory, rather than having to read the full file
+  - Always worth doing as much pre-processing as possible \alert{offline}!
+
+## Similar alternatives
+
+  - Dash (Python)
+  - Tableau (drag and drop)
+  - Observable (Javascript/D3)
   
 ## Conclusions
 
   - Biggest \alert{strength}: Shiny makes it easy to get apps up and running with a wide range of features to cover most use cases
-  - Biggest \alert{weakness}: For larger apps, the code can become hard to navigate, particularly if you start adding in custom JS
+  - Biggest \alert{weakness}: For larger apps, the code can become hard to navigate, particularly if you start adding in custom JS/HTML/CSS
+  - If you need support come along to a Research Coding Club drop-in session or ask on our slack channel `#research-coding-club`. Join the mailing list at [https://researchcodingclub.github.io/](https://researchcodingclub.github.io/)
   

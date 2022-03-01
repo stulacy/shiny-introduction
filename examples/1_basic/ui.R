@@ -1,7 +1,6 @@
 library(shiny)
 
 shinyUI(
-    
     # This is the container for all the UI elements
     fluidPage(
         
@@ -12,4 +11,5 @@ shinyUI(
         # in server.R
         plotOutput("scatter"),
         tableOutput("table")
-))
+    )
+)
