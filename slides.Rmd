@@ -1,7 +1,7 @@
 ---
 title: "Making interactive web-apps in R using Shiny"
 author: "Stuart Lacy"
-date: "02/03/2022"
+date: "2022-03-02"
 output: 
   binb::metropolis:
       keep_tex: false
@@ -119,11 +119,11 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Example 5: Custom reactive objects
 
   - So far we've seen that `input` objects are reactive and will \alert{trigger a change} in any downstream output that uses them
-  - You can also \alert{create your own} reactive elements from several possible data types
-  - \alert{Be careful} when chaining lots of reactive elements, it can make your code hard to follow and your app possibly slow!
+  - You can also \alert{create your own} reactive elements in a variety of ways
+  - \alert{Be careful} when there are lots of reactive elements, it can make your code hard to follow and your app possibly slow!
   - `examples/5_custom_reactivity`
   
-## Reactivity chains
+## Reactivity chaining
 
 \begin{columns}[T,onlytextwidth]
     \column{0.5\textwidth}
@@ -234,7 +234,7 @@ observe({
 ## Data storage:
 
   - Several options for storing data
-  - \alert{CSV} 
+  - \alert{CSV/other structured files}
     - On same machine
     - Or remote (through AWS, Google Drive, or even Google Sheets)
   - \alert{Database} on same machine (SQLite) or remote (Postgres/MySQL/SQLServer etc...)
@@ -244,8 +244,9 @@ observe({
 ## Similar alternatives
 
   - Dash (Python)
-  - Tableau (drag and drop)
   - Observable (Javascript/D3)
+  - Tableau (drag and drop, commercial)
+  - Grafana (drag and drop, open-source)
   
 ## Conclusions
 
