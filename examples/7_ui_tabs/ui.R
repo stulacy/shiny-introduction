@@ -3,7 +3,7 @@ library(plotly)
 
 shinyUI(
     fluidPage(
-        titlePanel("Example 5 - UI Tabs"),
+        titlePanel("Example 7 - UI Tabs"),
         
         sidebarLayout(
             sidebarPanel(

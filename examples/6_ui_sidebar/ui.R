@@ -3,7 +3,7 @@ library(plotly)
 
 shinyUI(
     fluidPage(
-        titlePanel("Example 4 - UI Sidebar"),
+        titlePanel("Example 6 - UI Sidebar"),
         
         # Rather than directly adding the UI elements, we wrap them
         # in a sidebarLayout, which takes 2 arguments: a sidebarPanel and a mainPanel

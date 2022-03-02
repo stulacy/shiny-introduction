@@ -5,17 +5,19 @@ library(plotly)
 shinyServer(function(input, output) {
     
     output$histogram <- renderPlot({
-        xinput <- sym(input$xvar)
         iris %>%
-            ggplot(aes(x=!!xinput)) +
-                geom_histogram()
+            rename(chosen = one_of(input$xvar)) %>%
+            ggplot(aes(x=chosen)) +
+                geom_histogram() +
+                xlab(input$xvar)
     })
     
     output$density <- renderPlot({
-        xinput <- sym(input$xvar)
         iris %>%
-            ggplot(aes(x=!!xinput)) +
-                geom_density()
+            rename(chosen = one_of(input$xvar)) %>%
+            ggplot(aes(x=chosen)) +
+                geom_density() +
+                xlab(input$xvar)
     })
     
     # Note there's no differentiation here between outputs for each page.

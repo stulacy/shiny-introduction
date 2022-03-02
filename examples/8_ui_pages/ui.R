@@ -4,7 +4,7 @@ library(plotly)
 shinyUI(
     # Previously we used a 'fluidPage' as the top level page container. That just provided a single page app
     # navbarPage allows for multiple pages
-    navbarPage("Example 6 - UI Pages",
+    navbarPage("Example 8 - UI Pages",
                # Each tabPanel contains a completely new environment with its own UI elements.
                # Even for this simple app, this code is already getting quite cluttered and hard to follow!
                # You can write each tabPanel in its own file and refer to them here with `source`
